@@ -1,10 +1,12 @@
 TEMPLATE = lib
-TARGET=feeda
+TARGET=../libs/feeda
 
 HEADERS += \
     constants.h \
     defs.h \
-    feedadownloader.h
+    feedadownloader.h \
+    feedaparser.h
 
 SOURCES += \
-    feedadownloader.cpp
+    feedadownloader.cpp \
+    feedaparser.cpp
