@@ -11,6 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = ../feeda
 TEMPLATE = app
 
+LIBS += -L../libs -lfeeda
+INCLUDEPATH +=../libfeeda
 
 SOURCES += main.cpp\
         mainwindow.cpp

@@ -17,19 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include "feedadownloader.h"
+#include "feedaparser.h"
 
-#include<QDebug>
-
-using namespace Core;
-
-FeedaDownloader::FeedaDownloader(QString aUrl, QObject *parent) :
-    QThread(parent),mUrl(aUrl)
+FeedaParser::FeedaParser(QObject *parent) :
+    QObject(parent)
 {
-}
-
-void FeedaDownloader::run()
-{
-    qDebug()<<__PRETTY_FUNCTION__;
-    return;
 }

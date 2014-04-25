@@ -17,61 +17,21 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef FEEDADOWNLOADER_H
-#define FEEDADOWNLOADER_H
+#ifndef FEEDAPARSER_H
+#define FEEDAPARSER_H
 
-#include <QThread>
-#include <QUrl>
+#include <QObject>
 
-namespace Core
-{
-
-/**
- * @brief The FeedaDownloader class
- * The Class which is intended to download data from internet
- */
-class FeedaDownloader : public QThread
+class FeedaParser : public QObject
 {
     Q_OBJECT
 public:
-
-    /**
-     * @brief The State enum
-     */
-    enum State{
-        Started,
-        Finished
-    };
-
-    /**
-     * @brief FeedaDownloader
-     * @param aUrl Url to download
-     * @param parent Parent Object
-     * Constructor
-     */
-    explicit FeedaDownloader(QString aUrl,QObject *parent = 0);
-
-protected:
-
-    /**
-     * @brief QThread::run
-     */
-    void run();
-
+    explicit FeedaParser(QObject *parent = 0);
+    
 signals:
-
-    /**
-     * @brief stateChanged
-     * @param aState
-     * This signal will inform the user about the various states
-     */
-    void stateChanged(FeedaDownloader::State aState);
-
-private:
-    QUrl mUrl;
-
+    
+public slots:
+    
 };
 
-}
-
-#endif // FEEDADOWNLOADER_H
+#endif // FEEDAPARSER_H
