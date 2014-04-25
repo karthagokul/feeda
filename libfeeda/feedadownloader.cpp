@@ -17,9 +17,17 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#include "feedadownloader.h"
 
-#define RSS2SAMPLE_XML "http://cyber.law.harvard.edu/rss/examples/rss2sample.xml"
+using namespace Utils;
 
-#endif // CONSTANTS_H
+FeedaDownloader::FeedaDownloader(QString aUrl, QObject *parent) :
+    QThread(parent),mUrl(aUrl)
+{
+}
+
+void FeedaDownloader::run()
+{
+    QDebug()<<__PRETTY_FUNCTION__;
+    return;
+}
