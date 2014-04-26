@@ -25,8 +25,8 @@
 
 using namespace Core;
 
-FeedaDownloader::FeedaDownloader(QString aUrl, QObject *parent) :
-    QObject(parent),mUrl(QUrl(aUrl)),mManager(0)
+FeedaDownloader::FeedaDownloader(QObject *parent) :
+    QObject(parent),mManager(0)
 {
     mManager=new QNetworkAccessManager(this);
     connect(mManager,SIGNAL(finished(QNetworkReply*)),this,SLOT(onFinished(QNetworkReply*)));
@@ -46,10 +46,10 @@ void FeedaDownloader::onFinished(QNetworkReply *aReply)
     }
 }
 
-void FeedaDownloader::start()
+void FeedaDownloader::start(const QString &aUrl)
 {
     qDebug()<<__PRETTY_FUNCTION__;
-    mManager->get(QNetworkRequest(mUrl));
+    mManager->get(QNetworkRequest(QUrl(aUrl)));
     emit stateChanged(FeedaDownloader::Started);
     return;
 }

@@ -2,23 +2,31 @@
 #define FEEDACHANNEL_H
 
 #include <QObject>
+#include <QList>
+#include <QPointer>
 #include <QString>
 #include <QUrl>
 #include <QImage>
 #include <QDateTime>
+#include <QDomDocument>
+#include "feedastory.h"
 
 namespace Core {
+
+class FeedaStory;
 
 class FeedaChannel : public QObject
 {
     Q_OBJECT
 public:
-    explicit FeedaChannel(QString aChannelInputStr,QObject *parent = 0);
+    explicit FeedaChannel(const QDomElement &aChannelElement,QObject *parent = 0);
 
     bool isValid() const
     {
         return mValid;
     }
+
+    void printinfo();
 
 private:
 
@@ -27,7 +35,7 @@ private:
      * @param aChannelInputStr
      * The function which constructs members from an input string
      */
-    void parseInputString(QString aChannelInputStr);
+    void parse(const QDomElement &aChannelElement);
 
 signals:
 
@@ -124,6 +132,8 @@ private:
      * @brief mSkipDays
      */
     uint mSkipDays;
+
+    QList<QPointer<FeedaStory> > mStories;
 
 };
 

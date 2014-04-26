@@ -46,17 +46,16 @@ public:
 
     /**
      * @brief FeedaDownloader
-     * @param aUrl Url to download
      * @param parent Parent Object
      * Constructor
      */
-    explicit FeedaDownloader(QString aUrl,QObject *parent = 0);
+    explicit FeedaDownloader(QObject *parent = 0);
 
     /**
      * @brief start
      * Function to start the operation
      */
-    void start();
+    void start(const QString &aUrl);
 
     /**
      * @brief data
@@ -80,10 +79,9 @@ signals:
      * @param aState
      * This signal will inform the user about the various states
      */
-    void stateChanged(FeedaDownloader::State aState);
+    void stateChanged(const FeedaDownloader::State &aState);
 
 private:
-    QUrl mUrl;
     QNetworkAccessManager *mManager;
     QString mData;
 
