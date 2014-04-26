@@ -1,12 +1,18 @@
 TEMPLATE = lib
 TARGET=../libs/feeda
+QT+=network xml
 
 HEADERS += \
     constants.h \
-    defs.h \
     feedadownloader.h \
-    feedaparser.h
+    feedaparser.h \
+    feedachannel.h \
+    feedastory.h \
+    feedaengine.h
 
 SOURCES += \
     feedadownloader.cpp \
-    feedaparser.cpp
+    feedaparser.cpp \
+    feedachannel.cpp \
+    feedastory.cpp \
+    feedaengine.cpp

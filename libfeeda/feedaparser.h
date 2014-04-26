@@ -21,17 +21,41 @@
 #define FEEDAPARSER_H
 
 #include <QObject>
+#include <QPointer>
+#include "feedachannel.h"
+
+namespace Core {
 
 class FeedaParser : public QObject
 {
     Q_OBJECT
 public:
     explicit FeedaParser(QObject *parent = 0);
+    void setData(QString aChannelInputStr);
+
+
+    /**
+     * @brief parseInputString
+     * @param aChannelInputStr
+     * The function which constructs members from an input string
+     */
+    void parseInputString(QString aChannelInputStr);
+
     
 signals:
-    
+    /**
+     * @brief error
+     * Function to intimate if parsing error occured
+     */
+    void error();
+
+
 public slots:
-    
+
+private:
+    QList<QPointer<FeedaChannel> > mChannels;
 };
+
+}
 
 #endif // FEEDAPARSER_H

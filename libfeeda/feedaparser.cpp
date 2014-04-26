@@ -19,7 +19,45 @@
 
 #include "feedaparser.h"
 
+#include <QDebug>
+#include <QXmlStreamReader>
+
+using namespace Core;
+
 FeedaParser::FeedaParser(QObject *parent) :
     QObject(parent)
 {
+
+}
+
+void FeedaParser::setData(QString aChannelInputStr)
+{
+    parseInputString(aChannelInputStr);
+}
+
+void FeedaParser::parseInputString(QString aChannelInputStr)
+{
+    qDebug()<<__PRETTY_FUNCTION__;
+    QXmlStreamReader xml(aChannelInputStr);
+    while(!xml.atEnd() && !xml.hasError()) {
+        QXmlStreamReader::TokenType token = xml.readNext();
+        /* If token is just StartDocument, we'll go to next.*/
+        if(token == QXmlStreamReader::StartDocument) {
+            continue;
+        }
+        /* If token is StartElement, we'll see if we can read it.*/
+        if(token == QXmlStreamReader::StartElement) {
+            /* If it's named channel, we'll dig the information from there.*/
+            if(xml.name() == "channel") {
+                FeedaChannel *channel=new FeedaChannel(xml.text().toString(),this);
+                if(channel->isValid())
+                {
+                    mChannels.append(channel);
+                }
+            }
+        }
+    }
+    if(xml.hasError()) {
+        emit error();
+      }
 }

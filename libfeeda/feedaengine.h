@@ -9,6 +9,8 @@ class FeedaEngine : public QObject
 public:
     explicit FeedaEngine(QObject *parent = 0);
 
+    bool addRssFeed(QString aFeedUrl);
+
 signals:
 
 public slots:

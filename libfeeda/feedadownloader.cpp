@@ -19,17 +19,46 @@
 
 #include "feedadownloader.h"
 
-#include<QDebug>
+#include <QDebug>
+#include <QNetworkRequest>
+#include <QNetworkReply>
 
 using namespace Core;
 
 FeedaDownloader::FeedaDownloader(QString aUrl, QObject *parent) :
-    QThread(parent),mUrl(aUrl)
+    QObject(parent),mUrl(QUrl(aUrl)),mManager(0)
 {
+    mManager=new QNetworkAccessManager(this);
+    connect(mManager,SIGNAL(finished(QNetworkReply*)),this,SLOT(onFinished(QNetworkReply*)));
 }
 
-void FeedaDownloader::run()
+void FeedaDownloader::onFinished(QNetworkReply *aReply)
 {
     qDebug()<<__PRETTY_FUNCTION__;
+    if(aReply->error()==QNetworkReply::NoError)
+    {
+        mData=QString(aReply->readAll());
+        emit stateChanged(FeedaDownloader::Finished);
+    }
+    else
+    {
+        qCritical()<<aReply->errorString();
+    }
+}
+
+void FeedaDownloader::start()
+{
+    qDebug()<<__PRETTY_FUNCTION__;
+    mManager->get(QNetworkRequest(mUrl));
+    emit stateChanged(FeedaDownloader::Started);
     return;
+}
+
+FeedaDownloader::~FeedaDownloader()
+{
+    if(mManager)
+    {
+        delete mManager;
+        mManager=0;
+    }
 }
