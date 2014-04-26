@@ -10,8 +10,8 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    FeedaEngine *mEngine=FeedaEngine::instance();
-    mEngine->addRssFeed(QString(RSS2SAMPLE_XML));
+    FeedaEngine *mEngine=new FeedaEngine(&a);
+    mEngine->registerRssFeed(QString(RSS2SAMPLE_XML));
 
     /*MainWindow w;
     w.show();*/

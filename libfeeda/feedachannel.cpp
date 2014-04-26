@@ -59,12 +59,10 @@ void FeedaChannel::parse(const QDomElement &aChannelElement)
         }
         else if(tag=="item")
         {
-            qDebug()<<"Got an Item";
             FeedaStory *story=new FeedaStory(n.toElement(),this);
             if(story->isValid())
             {
-                story->printinfo();
-                mStories.append(story);
+                mStories.insert(story->id(),story);
             }
             else
             {
