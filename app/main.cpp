@@ -1,16 +1,17 @@
 #include "mainwindow.h"
 #include <QApplication>
 
-#include "feedadownloader.h"
+#include "feedaengine.h"
 #include "constants.h"
+
 using namespace Core;
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    FeedaDownloader f(QString(RSS2SAMPLE_XML));
-    f.start();
+    FeedaEngine *mEngine=FeedaEngine::instance();
+    mEngine->addRssFeed(QString(RSS2SAMPLE_XML));
 
     /*MainWindow w;
     w.show();*/

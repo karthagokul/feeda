@@ -5,6 +5,7 @@
 #include <QString>
 #include <QUrl>
 #include <QDateTime>
+#include <QDomDocument>
 
 namespace Core {
 
@@ -12,7 +13,14 @@ class FeedaStory : public QObject
 {
     Q_OBJECT
 public:
-    explicit FeedaStory(QString aChannelInputStr,QObject *parent = 0);
+    explicit FeedaStory(const QDomElement &aChannelElement,QObject *parent = 0);
+
+    bool isValid() const
+    {
+        return mValid;
+    }
+
+    void printinfo();
 
 private:
 
@@ -21,19 +29,13 @@ private:
      * @param aChannelInputStr
      * The function which constructs members from an input string
      */
-    void parseInputString(QString aChannelInputStr);
-
-signals:
-
-    /**
-     * @brief error
-     * Function to intimate if parsing error occured
-     */
-    void error();
+    void parse(const QDomElement &aChannelElement);
 
 public slots:
 
 private:
+
+    bool mValid;
 
     // The below member variables are part of RSS 2.0 specification
 

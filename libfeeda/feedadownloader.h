@@ -20,8 +20,9 @@
 #ifndef FEEDADOWNLOADER_H
 #define FEEDADOWNLOADER_H
 
-#include <QThread>
+#include <QObject>
 #include <QUrl>
+#include <QNetworkAccessManager>
 
 namespace Core
 {
@@ -30,7 +31,7 @@ namespace Core
  * @brief The FeedaDownloader class
  * The Class which is intended to download data from internet
  */
-class FeedaDownloader : public QThread
+class FeedaDownloader : public QObject
 {
     Q_OBJECT
 public:
@@ -45,18 +46,31 @@ public:
 
     /**
      * @brief FeedaDownloader
-     * @param aUrl Url to download
      * @param parent Parent Object
      * Constructor
      */
-    explicit FeedaDownloader(QString aUrl,QObject *parent = 0);
-
-protected:
+    explicit FeedaDownloader(QObject *parent = 0);
 
     /**
-     * @brief QThread::run
+     * @brief start
+     * Function to start the operation
      */
-    void run();
+    void start(const QString &aUrl);
+
+    /**
+     * @brief data
+     * @return the downloaded data
+     */
+    QString data() const
+    {
+        return mData;
+    }
+
+    virtual ~FeedaDownloader();
+
+protected slots:
+
+    void onFinished(QNetworkReply *aReply);
 
 signals:
 
@@ -65,10 +79,11 @@ signals:
      * @param aState
      * This signal will inform the user about the various states
      */
-    void stateChanged(FeedaDownloader::State aState);
+    void stateChanged(const FeedaDownloader::State &aState);
 
 private:
-    QUrl mUrl;
+    QNetworkAccessManager *mManager;
+    QString mData;
 
 };
 
