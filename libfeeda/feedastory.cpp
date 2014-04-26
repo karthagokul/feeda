@@ -5,7 +5,7 @@
 using namespace Core;
 
 FeedaStory::FeedaStory(const QDomElement &aChannelElement,QObject *parent) :
-    QObject(parent),mValid(true)
+    QObject(parent),mValid(true),mRead(0)
 {
     parse(aChannelElement);
 }

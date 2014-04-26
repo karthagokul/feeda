@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QPointer>
+#include <QMap>
 
 #include "feedadownloader.h"
 
@@ -15,32 +16,31 @@ class FeedaEngine : public QObject
 {
     Q_OBJECT
 private:
-    /**
-     * @brief FeedaEngine
-     * @param parent
-     * Constructor
-     */
-    explicit FeedaEngine(QObject *parent = 0);
 
     void processRssData(const QString &aRssString);
+
+    void processDownload(FeedaDownloader *aItem);
+
 
 public:
     enum Error
     {
         RssXMLParseError
     };
-
     /**
-     * @brief instance
-     * @return Returns Instance
+     * @brief FeedaEngine
+     * @param parent
+     * Constructor
      */
-    static FeedaEngine *instance();
+    explicit FeedaEngine(QObject *parent);
+
+    ~FeedaEngine();
 
     /**
-     * @brief addRssFeed
+     * @brief registerRssFeed
      * @param aFeedUrl URL String to the feed
      */
-    void addRssFeed(const QString &aFeedUrl);
+    bool registerRssFeed(const QString &aFeedUrl);
 
 signals:
     void error(const Error &aError);
@@ -51,9 +51,16 @@ private slots:
     void onDownloadEngineStatusChanged(const FeedaDownloader::State &aState);
 
 private:
-    static FeedaEngine *mSelf;
-    QPointer<FeedaDownloader> mDownloadEngine;
-    QList<QPointer<FeedaChannel> > mChannels;
+    void save();
+    void restore();
+
+private:
+    QMap<QString,QPointer<FeedaChannel> > mChannels;
+
+    QList<QUrl> mFeeds;
+
+    QList<QPointer<FeedaDownloader> > mActiveDowloads;
+
 
 };
 

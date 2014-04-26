@@ -20,6 +20,21 @@ public:
         return mValid;
     }
 
+    QString id() const
+    {
+        return mGuid;
+    }
+
+    bool read() const
+    {
+        return mRead;
+    }
+
+    void setRead(bool aRead)
+    {
+        mRead=aRead;
+    }
+
     void printinfo();
 
 private:
@@ -36,6 +51,8 @@ public slots:
 private:
 
     bool mValid;
+
+    bool mRead;
 
     // The below member variables are part of RSS 2.0 specification
 
@@ -76,6 +93,7 @@ private:
 
     /**
      * @brief mGuid
+     * Thie field is the Url to the particular item
      */
     QString mGuid;
 
@@ -88,6 +106,7 @@ private:
      * @brief mSource
      */
     QUrl mSource;
+
 };
 
 }

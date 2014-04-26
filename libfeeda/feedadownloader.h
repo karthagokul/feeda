@@ -41,7 +41,8 @@ public:
      */
     enum State{
         Started,
-        Finished
+        Finished,
+        Failed
     };
 
     /**
@@ -49,13 +50,23 @@ public:
      * @param parent Parent Object
      * Constructor
      */
-    explicit FeedaDownloader(QObject *parent = 0);
+    explicit FeedaDownloader(const QString &aUrl,QObject *parent = 0);
+
+    QString url() const
+    {
+        return mUrl;
+    }
+
+    FeedaDownloader::State state()
+    {
+        return mState;
+    }
 
     /**
      * @brief start
      * Function to start the operation
      */
-    void start(const QString &aUrl);
+    void start();
 
     /**
      * @brief data
@@ -84,6 +95,8 @@ signals:
 private:
     QNetworkAccessManager *mManager;
     QString mData;
+    QString mUrl;
+    State mState;
 
 };
 

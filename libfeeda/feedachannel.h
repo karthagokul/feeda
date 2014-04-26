@@ -2,7 +2,7 @@
 #define FEEDACHANNEL_H
 
 #include <QObject>
-#include <QList>
+#include <QMap>
 #include <QPointer>
 #include <QString>
 #include <QUrl>
@@ -26,6 +26,11 @@ public:
         return mValid;
     }
 
+    QString id() const
+    {
+        return mLink.toString();
+    }
+
     void printinfo();
 
 private:
@@ -41,6 +46,10 @@ signals:
 
 
 public slots:
+
+private:
+    void save();
+    void restore();
 
 private:
 
@@ -133,7 +142,7 @@ private:
      */
     uint mSkipDays;
 
-    QList<QPointer<FeedaStory> > mStories;
+    QMap<QString,QPointer<FeedaStory> > mStories;
 
 };
 

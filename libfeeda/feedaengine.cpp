@@ -1,29 +1,30 @@
 #include "feedaengine.h"
 #include "feedachannel.h"
+#include "constants.h"
 
 #include <QDomDocument>
+#include <QDebug>
+#include <QFile>
+#include <QCoreApplication>
 
 using namespace Core;
-
-FeedaEngine *FeedaEngine::mSelf=0;
 
 FeedaEngine::FeedaEngine(QObject *parent) :
     QObject(parent)
 {
+//    restore();
 }
 
-FeedaEngine *FeedaEngine::instance()
+FeedaEngine::~FeedaEngine()
 {
-    if(!mSelf)
-    {
-        mSelf=new FeedaEngine();
-    }
-    return mSelf;
+    qDebug()<<"Deleting ENGINEEE";
+    save();
 }
 
 void FeedaEngine::onDownloadEngineStatusChanged(const FeedaDownloader::State &aState)
 {
     qDebug()<<__PRETTY_FUNCTION__;
+    FeedaDownloader* item=(FeedaDownloader*)sender();
     switch(aState)
     {
     case FeedaDownloader::Started:
@@ -31,8 +32,24 @@ void FeedaEngine::onDownloadEngineStatusChanged(const FeedaDownloader::State &aS
         break;
     case FeedaDownloader::Finished:
         qDebug()<<"Download Finished";
-        processRssData(mDownloadEngine->data());
+        processDownload(item);
         break;
+    case FeedaDownloader::Failed:
+        qDebug()<<"Download Failed";
+        processDownload(item);
+        break;
+    }
+}
+
+void FeedaEngine::processDownload(FeedaDownloader *aItem)
+{
+    for(int i=0;i<mActiveDowloads.count();i++)
+    {
+        if(aItem==mActiveDowloads.at(i))
+        {
+            processRssData(aItem->data());
+        }
+        mActiveDowloads.removeAt(i);
     }
 }
 
@@ -46,11 +63,14 @@ void FeedaEngine::processRssData(const QString &aRssString)
         QDomElement element = doc.documentElement();
         for(QDomNode n = element.firstChild(); !n.isNull(); n = n.nextSibling())
         {
-            //here we have channel
+            //We have got a channel,create an object now;
             FeedaChannel *channel=new FeedaChannel(n.toElement(),this);
+            //Checks whether the channel is valid
             if(channel->isValid())
             {
                 channel->printinfo();
+                //appends to the channel info
+                mChannels.insert(channel->id(),channel);
             }
             else
             {
@@ -59,20 +79,57 @@ void FeedaEngine::processRssData(const QString &aRssString)
             }
         }
     }
-
 }
 
-void FeedaEngine::addRssFeed(const QString &aFeedUrl)
+void FeedaEngine::save()
 {
-    //checks if the download engine exists
-    if(mDownloadEngine.isNull())
+    QFile file(CHANNELS_DATA);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return;
+
+    QTextStream out(&file);
+    for(int i=0;i<mFeeds.count();i++)
     {
-        mDownloadEngine=new FeedaDownloader(this);
-        //Connects to the Download Engine Events
-        connect(mDownloadEngine,SIGNAL(stateChanged(const FeedaDownloader::State &)),this,SLOT(onDownloadEngineStatusChanged(const FeedaDownloader::State &)));
+        out<<mFeeds.at(i).toString();
     }
 
+    file.close();
+}
+
+void FeedaEngine::restore()
+{
+    QFile file(CHANNELS_DATA);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return;
+
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        registerRssFeed(line);
+    }
+    file.close();
+}
+
+bool FeedaEngine::registerRssFeed(const QString &aFeedUrl)
+{
+    //Checks the feed is already registerd
+    for(int i=0;i<mFeeds.count();i++)
+    {
+        if(mFeeds.at(i).toString()==aFeedUrl)
+            return false;
+    }
+
+    FeedaDownloader *downloader=new FeedaDownloader(aFeedUrl,this);
+    //Connects to the Downloader Events
+    connect(downloader,SIGNAL(stateChanged(const FeedaDownloader::State &)),this,SLOT(onDownloadEngineStatusChanged(const FeedaDownloader::State &)));
+
+    //adding it to active downloads
+    mActiveDowloads.append(downloader);
+
+    //Add it to the feed list
+    mFeeds.append(QUrl(aFeedUrl));
+
     //initiates the download
-    mDownloadEngine->start(aFeedUrl);
-    return;
+    downloader->start();
+    return true;
 }
