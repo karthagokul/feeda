@@ -34,6 +34,10 @@ public:
      */
     explicit FeedaEngine(QObject *parent);
 
+    void start();
+
+    void stop();
+
     ~FeedaEngine();
 
     /**
@@ -51,8 +55,8 @@ private slots:
     void onDownloadEngineStatusChanged(const FeedaDownloader::State &aState);
 
 private:
-    void save();
-    void restore();
+    bool save();
+    bool restore();
 
 private:
     QMap<QString,QPointer<FeedaChannel> > mChannels;
