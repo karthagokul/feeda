@@ -12,14 +12,30 @@ using namespace Core;
 FeedaEngine::FeedaEngine(QObject *parent) :
     QObject(parent)
 {
-//    restore();
 }
 
 FeedaEngine::~FeedaEngine()
 {
-    qDebug()<<"Deleting ENGINEEE";
-    save();
+
 }
+
+void FeedaEngine::start()
+{
+    if(!restore())
+    {
+        qDebug()<<"Failed to restore configuration";
+    }
+}
+
+void FeedaEngine::stop()
+{
+    if(!save())
+    {
+        qDebug()<<"Failed to save configuration";
+    }
+
+}
+
 
 void FeedaEngine::onDownloadEngineStatusChanged(const FeedaDownloader::State &aState)
 {
@@ -43,6 +59,7 @@ void FeedaEngine::onDownloadEngineStatusChanged(const FeedaDownloader::State &aS
 
 void FeedaEngine::processDownload(FeedaDownloader *aItem)
 {
+    qDebug()<<__PRETTY_FUNCTION__;
     for(int i=0;i<mActiveDowloads.count();i++)
     {
         if(aItem==mActiveDowloads.at(i))
@@ -55,6 +72,7 @@ void FeedaEngine::processDownload(FeedaDownloader *aItem)
 
 void FeedaEngine::processRssData(const QString &aRssString)
 {
+    qDebug()<<__PRETTY_FUNCTION__;
     QDomDocument doc;
     QString errorMsg;
     int errorLine, errorColumn;
@@ -68,7 +86,7 @@ void FeedaEngine::processRssData(const QString &aRssString)
             //Checks whether the channel is valid
             if(channel->isValid())
             {
-                channel->printinfo();
+                //channel->printinfo();
                 //appends to the channel info
                 mChannels.insert(channel->id(),channel);
             }
@@ -81,11 +99,12 @@ void FeedaEngine::processRssData(const QString &aRssString)
     }
 }
 
-void FeedaEngine::save()
+bool FeedaEngine::save()
 {
+    qDebug()<<__PRETTY_FUNCTION__;
     QFile file(CHANNELS_DATA);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
-        return;
+        return false;
 
     QTextStream out(&file);
     for(int i=0;i<mFeeds.count();i++)
@@ -94,13 +113,15 @@ void FeedaEngine::save()
     }
 
     file.close();
+    return true;
 }
 
-void FeedaEngine::restore()
+bool FeedaEngine::restore()
 {
+    qDebug()<<__PRETTY_FUNCTION__;
     QFile file(CHANNELS_DATA);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-        return;
+        return false;
 
     QTextStream in(&file);
     while (!in.atEnd()) {
@@ -108,6 +129,7 @@ void FeedaEngine::restore()
         registerRssFeed(line);
     }
     file.close();
+    return true;
 }
 
 bool FeedaEngine::registerRssFeed(const QString &aFeedUrl)
@@ -116,7 +138,9 @@ bool FeedaEngine::registerRssFeed(const QString &aFeedUrl)
     for(int i=0;i<mFeeds.count();i++)
     {
         if(mFeeds.at(i).toString()==aFeedUrl)
+        {
             return false;
+        }
     }
 
     FeedaDownloader *downloader=new FeedaDownloader(aFeedUrl,this);
