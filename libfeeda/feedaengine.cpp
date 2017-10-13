@@ -73,6 +73,7 @@ void FeedaEngine::processDownload(FeedaDownloader *aItem)
 void FeedaEngine::processRssData(const QString &aRssString)
 {
     qDebug()<<__PRETTY_FUNCTION__;
+    //qDebug()<<aRssString;
     QDomDocument doc;
     QString errorMsg;
     int errorLine, errorColumn;

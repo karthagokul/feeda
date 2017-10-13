@@ -1,12 +1,15 @@
 #include "feedappengine.h"
+#include "feedaengine.h"
 #include <QQmlContext>
 
 FeedAppEngine::FeedAppEngine(QObject *aParent):QQmlApplicationEngine(aParent)
 {
+    mEngine =new Core::FeedaEngine(this);
 }
 
 bool FeedAppEngine::start()
 {
+    mEngine->start();
     QStringList dataList;
     dataList.append("Item 1");
     dataList.append("Item 2");

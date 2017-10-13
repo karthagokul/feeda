@@ -7,6 +7,7 @@ using namespace Core;
 FeedaChannel::FeedaChannel(const QDomElement &aChannelElement,QObject *parent) :
     QObject(parent),mValid(true)
 {
+    qDebug()<<__PRETTY_FUNCTION__;
     parse(aChannelElement);
 }
 
@@ -71,6 +72,7 @@ void FeedaChannel::parse(const QDomElement &aChannelElement)
             }
         }
     }
+    printinfo();
 }
 
 void FeedaChannel::printinfo()
