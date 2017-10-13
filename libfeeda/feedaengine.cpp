@@ -19,6 +19,35 @@ FeedaEngine::~FeedaEngine()
 
 }
 
+void FeedaEngine::importOPMLFile(const QString &aPth)
+{
+    QDomDocument doc;
+    QString errorMsg;
+    int errorLine, errorColumn;
+
+    QFile file(aPth);
+    if(!file.open(QFile::ReadOnly))
+    {
+        qDebug()<<"Unable to Open the OPML file";
+        return;
+    }
+    QString content=QString(file.readAll());
+    if ( doc.setContent( content, &errorMsg, &errorLine, &errorColumn ) )
+    {
+        QDomNodeList nodes = doc.elementsByTagName("outline");
+        for(int i = 0; i < 4; i++)
+        {
+            QDomNode elm = nodes.at(i);
+            if(elm.isElement())
+            {
+                qDebug()<<elm.toElement().attribute("xmlUrl")<<","<<elm.toElement().attribute("type");
+                registerRssFeed(elm.toElement().attribute("xmlUrl"));
+                //qDebug()<<;
+            }
+        }
+    }
+}
+
 void FeedaEngine::start()
 {
     if(!restore())
@@ -73,7 +102,7 @@ void FeedaEngine::processDownload(FeedaDownloader *aItem)
 void FeedaEngine::processRssData(const QString &aRssString)
 {
     qDebug()<<__PRETTY_FUNCTION__;
-    //qDebug()<<aRssString;
+   // qDebug()<<aRssString;
     QDomDocument doc;
     QString errorMsg;
     int errorLine, errorColumn;

@@ -22,6 +22,7 @@ private:
     void processDownload(FeedaDownloader *aItem);
 
 
+
 public:
     enum Error
     {
@@ -35,6 +36,8 @@ public:
     explicit FeedaEngine(QObject *parent);
 
     void start();
+
+    void importOPMLFile(const QString &aPth);
 
     void stop();
 
@@ -60,9 +63,7 @@ private:
 
 private:
     QMap<QString,QPointer<FeedaChannel> > mChannels;
-
     QList<QUrl> mFeeds;
-
     QList<QPointer<FeedaDownloader> > mActiveDowloads;
 
 

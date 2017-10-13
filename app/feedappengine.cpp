@@ -5,11 +5,12 @@
 FeedAppEngine::FeedAppEngine(QObject *aParent):QQmlApplicationEngine(aParent)
 {
     mEngine =new Core::FeedaEngine(this);
+    mEngine->importOPMLFile("opml_sample.xml");
 }
 
 bool FeedAppEngine::start()
 {
-    mEngine->start();
+    //mEngine->start();
     QStringList dataList;
     dataList.append("Item 1");
     dataList.append("Item 2");
@@ -18,4 +19,5 @@ bool FeedAppEngine::start()
     QQmlContext *ctxt = rootContext();
     ctxt->setContextProperty("myModel", QVariant::fromValue(dataList));
     load(QUrl(QStringLiteral("qrc:///main.qml")));
+    return true;
 }
