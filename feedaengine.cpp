@@ -35,14 +35,15 @@ void FeedaEngine::importOPMLFile(const QString &aPth)
     if ( doc.setContent( content, &errorMsg, &errorLine, &errorColumn ) )
     {
         QDomNodeList nodes = doc.elementsByTagName("outline");
-        for(int i = 0; i < 4; i++)
+        for(int i = 0; i < nodes.count(); i++)
         {
             QDomNode elm = nodes.at(i);
             if(elm.isElement())
             {
-                qDebug()<<elm.toElement().attribute("xmlUrl")<<","<<elm.toElement().attribute("type");
-                registerRssFeed(elm.toElement().attribute("xmlUrl"));
-                //qDebug()<<;
+//                qDebug()<<i<<"->"<<elm.toElement().attribute("xmlUrl")<<","<<elm.toElement().attribute("type");
+                //filtering out parent items
+                if(elm.toElement().hasAttribute("xmlUrl"))
+                    registerRssFeed(elm.toElement().attribute("xmlUrl"));
             }
         }
     }
@@ -68,7 +69,7 @@ void FeedaEngine::stop()
 
 void FeedaEngine::onDownloadEngineStatusChanged(const FeedaDownloader::State &aState)
 {
-    qDebug()<<__PRETTY_FUNCTION__;
+    //qDebug()<<__PRETTY_FUNCTION__;
     FeedaDownloader* item=(FeedaDownloader*)sender();
     switch(aState)
     {
@@ -88,7 +89,7 @@ void FeedaEngine::onDownloadEngineStatusChanged(const FeedaDownloader::State &aS
 
 void FeedaEngine::processDownload(FeedaDownloader *aItem)
 {
-    qDebug()<<__PRETTY_FUNCTION__;
+    //qDebug()<<__PRETTY_FUNCTION__;
     for(int i=0;i<mActiveDowloads.count();i++)
     {
         if(aItem==mActiveDowloads.at(i))
@@ -116,7 +117,7 @@ void FeedaEngine::processRssData(const QString &aRssString)
             //Checks whether the channel is valid
             if(channel->isValid())
             {
-                //channel->printinfo();
+                channel->printinfo();
                 //appends to the channel info
                 mChannels.insert(channel->id(),channel);
             }
@@ -164,6 +165,7 @@ bool FeedaEngine::restore()
 
 bool FeedaEngine::registerRssFeed(const QString &aFeedUrl)
 {
+    qDebug()<<__PRETTY_FUNCTION__;
     //Checks the feed is already registerd
     for(int i=0;i<mFeeds.count();i++)
     {

@@ -33,7 +33,7 @@ public:
      * @param parent
      * Constructor
      */
-    explicit FeedaEngine(QObject *parent);
+    explicit FeedaEngine(QObject *parent=0);
 
     void start();
 

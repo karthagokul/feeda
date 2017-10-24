@@ -1,7 +1,7 @@
 #ifndef FEEDAPPENGINE_H
 #define FEEDAPPENGINE_H
 
-#include <QQmlApplicationEngine>
+#include <QThread>
 
 namespace Core
 {
@@ -9,11 +9,11 @@ class FeedaEngine;
 }
 
 
-class FeedAppEngine : public QQmlApplicationEngine
+class FeedAppEngine : public QThread
 {
 public:
-    FeedAppEngine(QObject *aParent);
-    bool start();
+    FeedAppEngine(QObject *parent);
+    void run();
 
 private:
     Core::FeedaEngine* mEngine;

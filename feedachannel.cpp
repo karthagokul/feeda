@@ -13,7 +13,7 @@ FeedaChannel::FeedaChannel(const QDomElement &aChannelElement,QObject *parent) :
 
 void FeedaChannel::parse(const QDomElement &aChannelElement)
 {
-    qDebug()<<__PRETTY_FUNCTION__;
+    //qDebug()<<__PRETTY_FUNCTION__;
     for(QDomNode n = aChannelElement.firstChild(); !n.isNull(); n = n.nextSibling())
     {
         QString text=n.toElement().text();
@@ -63,6 +63,7 @@ void FeedaChannel::parse(const QDomElement &aChannelElement)
             FeedaStory *story=new FeedaStory(n.toElement(),this);
             if(story->isValid())
             {
+                story->printinfo();
                 mStories.insert(story->id(),story);
             }
             else

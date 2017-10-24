@@ -12,7 +12,7 @@ FeedaStory::FeedaStory(const QDomElement &aChannelElement,QObject *parent) :
 
 void FeedaStory::parse(const QDomElement &aChannelElement)
 {
-    qDebug()<<__PRETTY_FUNCTION__;
+   //qDebug()<<__PRETTY_FUNCTION__;
     for(QDomNode n = aChannelElement.firstChild(); !n.isNull(); n = n.nextSibling())
     {
         QString text=n.toElement().text();

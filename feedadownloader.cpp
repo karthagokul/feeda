@@ -50,7 +50,7 @@ void FeedaDownloader::onFinished(QNetworkReply *aReply)
 
 void FeedaDownloader::start()
 {
-    qDebug()<<__PRETTY_FUNCTION__;
+    //qDebug()<<__PRETTY_FUNCTION__;
     mManager->get(QNetworkRequest(QUrl(mUrl)));
     emit stateChanged(FeedaDownloader::Started);
     return;
