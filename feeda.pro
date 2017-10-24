@@ -1,10 +1,20 @@
+TARGET = feeda
 TEMPLATE = app
 
-
+#Application Layer
 SOURCES += main.cpp \
+        mainwindow.cpp \
     feedappengine.cpp
 
-QT+=network xml widgets
+HEADERS += \
+    feedappengine.h
+HEADERS  += mainwindow.h
+FORMS    += mainwindow.ui
+QT       += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+#engine
+QT+=network xml
 
 HEADERS += \
     constants.h \
@@ -18,14 +28,6 @@ SOURCES += \
     feedachannel.cpp \
     feedastory.cpp \
     feedaengine.cpp
-    
-RESOURCES +=
 
-# Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
 
-# Default rules for deployment.
-include(deployment.pri)
 
-HEADERS += \
-    feedappengine.h

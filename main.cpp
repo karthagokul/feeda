@@ -1,10 +1,13 @@
-#include <QGuiApplication>
-
+#include <QApplication>
 #include "feedappengine.h"
+#include "mainwindow.h"
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc,argv);
+    QApplication app(argc,argv);
+    MainWindow w;
+    w.show();
+
     FeedAppEngine f(&app);
     f.start();
 
