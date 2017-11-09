@@ -3,14 +3,13 @@ TEMPLATE = app
 
 #Application Layer
 SOURCES += main.cpp \
-        mainwindow.cpp \
     feedappengine.cpp
 
 HEADERS += \
     feedappengine.h
-HEADERS  += mainwindow.h
-FORMS    += mainwindow.ui
-QT       += core gui
+HEADERS  +=
+FORMS    +=
+QT       += core gui qml
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 #engine
@@ -29,5 +28,14 @@ SOURCES += \
     feedastory.cpp \
     feedaengine.cpp
 
+OTHER_FILES += \
+    main.qml
+
+RESOURCES += \
+    main.qrc
 
 
+
+# Please do not modify the following two lines. Required for deployment.
+include(qtquick2applicationviewer.pri)
+qtcAddDeployment()
