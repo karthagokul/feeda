@@ -22,20 +22,31 @@
 
 #include <QThread>
 
+
 namespace Core
 {
 class FeedaEngine;
 }
 
+class RssModel;
 
 class FeedAppEngine : public QThread
 {
+    enum RedditRoles {
+            UrlRole = Qt::UserRole + 1,
+            DescRole,ScoreRole
+        };
+
+    Q_OBJECT
 public:
     FeedAppEngine(QObject *parent);
     void run();
-
+protected slots:
+    void populateModel();
 private:
     Core::FeedaEngine* mEngine;
+public:
+    RssModel* mRssModel;
 };
 
 #endif // FEEDAPPENGINE_H

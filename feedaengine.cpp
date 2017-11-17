@@ -119,7 +119,7 @@ void FeedaEngine::processRssData(const QString &aRssString)
             {
                 channel->printinfo();
                 //appends to the channel info
-                mChannels.insert(channel->id(),channel);
+                mChannels.append(channel);
             }
             else
             {
@@ -128,6 +128,7 @@ void FeedaEngine::processRssData(const QString &aRssString)
             }
         }
     }
+    emit ready();
 }
 
 bool FeedaEngine::save()

@@ -59,9 +59,14 @@ public:
      * @param aFeedUrl URL String to the feed
      */
     bool registerRssFeed(const QString &aFeedUrl);
+    QList<QPointer<FeedaChannel> > getChannels() const
+    {
+        return mChannels;
+    }
 
 signals:
     void error(const Error &aError);
+    void ready();
 
 public slots:
 
@@ -73,11 +78,9 @@ private:
     bool restore();
 
 private:
-    QMap<QString,QPointer<FeedaChannel> > mChannels;
+    QList<QPointer<FeedaChannel> > mChannels;
     QList<QUrl> mFeeds;
     QList<QPointer<FeedaDownloader> > mActiveDowloads;
-
-
 };
 
 }

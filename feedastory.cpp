@@ -42,6 +42,7 @@ void FeedaStory::parse(const QDomElement &aChannelElement)
 
 void FeedaStory::printinfo()
 {
+    return;
     qDebug();
     qDebug()<<"Story";
     qDebug()<<"-------";

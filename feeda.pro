@@ -3,10 +3,12 @@ TEMPLATE = app
 
 #Application Layer
 SOURCES += main.cpp \
-    feedappengine.cpp
+    feedappengine.cpp \
+    rssmodel.cpp
 
 HEADERS += \
-    feedappengine.h
+    feedappengine.h \
+    rssmodel.h
 HEADERS  +=
 FORMS    +=
 QT       += core gui qml
@@ -39,3 +41,6 @@ RESOURCES += \
 # Please do not modify the following two lines. Required for deployment.
 include(qtquick2applicationviewer.pri)
 qtcAddDeployment()
+
+DISTFILES += \
+    StoryPane.qml

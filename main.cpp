@@ -1,8 +1,10 @@
 #include "qtquick2applicationviewer.h"
 #include "feedappengine.h"
-#include "mainwindow.h"
 #include <QGuiApplication>
+#include <QQmlContext>
 #include <QQmlApplicationEngine>
+#include <iostream>
+#include <unistd.h>
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +18,9 @@ int main(int argc, char *argv[])
 
     FeedAppEngine *aEngine=new FeedAppEngine(&app);
     aEngine->start();
+
+    engine.rootContext()->setContextProperty("rssmodel",(QObject*)aEngine->mRssModel);
+
     int ret= app.exec();
     delete aEngine;
     return ret;
