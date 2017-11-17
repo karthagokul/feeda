@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 1.2
+
 TableView {
     id: tableView
     frameVisible: false
@@ -23,6 +24,12 @@ TableView {
         resizable: false
         width: tableView.viewport.width - authorColumn.width
 
+        delegate: Component {
+            Text {
+                text: title
+                font.bold: true
+            }
+        }
     }
 
     TableViewColumn {
@@ -39,11 +46,13 @@ TableView {
         ListElement {
             title: "Google"
             url: "http://google.co.in"
+            read:false
         }
 
         ListElement {
-            title: "Herbert West—Reanimator"
-            url: "http://yahoo.co.in"
+            title: "Google"
+            url: "http://google.co.in"
+            read:true
         }
     }
 }

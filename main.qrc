@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>StoryPane.qml</file>
+        <file>ChannelPane.qml</file>
+        <file>StoryPreview.qml</file>
     </qresource>
 </RCC>

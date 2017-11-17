@@ -1,10 +1,6 @@
-//Dummy UI , need to tweak later
-
 import QtQuick 2.9
-import QtQuick.Controls 2.2
 import QtQuick.Controls 1.2
-import QtQuick.Controls 1.5
-import QtWebEngine 1.0
+
 
 ApplicationWindow {
     visible: true
@@ -12,46 +8,47 @@ ApplicationWindow {
     height: 480
     title: qsTr("Scroll")
 
+    function connectSignalsAndSlots()
+    {
+        //storypane.loadUrl.connect(storyview.onLoadUrlRequest);
+    }
+
     Component.onCompleted:
     {
-        storypane.loadUrl.connect(storyview.onLoadUrlRequest);
+        connectSignalsAndSlots()
     }
 
     StoryPane
     {
         id:storypane;
-        anchors.top:parent.top;
-        anchors.left:parent.left;
-        anchors.right: parent.right;
         height: 200;
+        anchors.top:parent.top;
+        anchors.left:channelpane.right;
+        anchors.right: parent.right;
+        anchors.margins: 2;
     }
 
-    WebEngineView {
+    ChannelPane
+    {
+        id:channelpane;
+        anchors.top:parent.top
+        anchors.left:parent.left
+        width:parent.width/4
+        anchors.bottom: parent.bottom
+        anchors.margins: 2;
+    }
+
+    StoryPreview
+    {
         id:storyview;
-        anchors.left:parent.left;
+        anchors.left:channelpane.right;
         anchors.top:storypane.bottom;
         anchors.bottom: parent.bottom
         anchors.right: parent.right;
-        //url: "http://www.qt.io"
+        anchors.margins: 2;
 
         function onLoadUrlRequest(urlString) {
-            console.log("Sending to URL: " + urlString)
-            storyview.url=urlString
+            //storyview.url=urlString
         }
     }
-
-    TreeView {
-        TableViewColumn {
-            title: "Name"
-            role: "fileName"
-            width: 300
-        }
-        TableViewColumn {
-            title: "Permissions"
-            role: "filePermissions"
-            width: 100
-        }
-        model:0
-    }
-
 }

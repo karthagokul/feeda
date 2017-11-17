@@ -43,4 +43,6 @@ include(qtquick2applicationviewer.pri)
 qtcAddDeployment()
 
 DISTFILES += \
-    StoryPane.qml
+    StoryPane.qml \
+    ChannelPane.qml \
+    StoryPreview.qml
